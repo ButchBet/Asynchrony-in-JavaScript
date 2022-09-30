@@ -19,5 +19,8 @@
   "bugs": {
     "url": "https://github.com/ButchBet/Asynchrony-in-JavaScript/issues"
   },
-  "homepage": "https://github.com/ButchBet/Asynchrony-in-JavaScript#readme"
+  "homepage": "https://github.com/ButchBet/Asynchrony-in-JavaScript#readme",
+  "dependencies": {
+    "xmlhttprequest": "^1.8.0"
+  }
 }
