@@ -1,24 +1,35 @@
-const API = "https://api.escuelajs.co/api/v1";
+//Platzi-Async
+//Author: @marigabirodcue
+//Date: 01/07/2022
 
-async function fetchData(URL) {
-  const response = fetch(URL);
-  const data = (await response).json();
-  
-  return data;
-}
+const API = 'https://api.escuelajs.co/api/v1';
+const urlApi = API;
 
-const processData = async (URL) => {
+//Declaración de fetchData como la función del Generador
+async function* fetchData(url) {
   try {
-  	const products = await fetchData(`${URL}/products`);
-    const product = await fetchData(`${URL}/products/${products[0].id}`);
-    const category = await fetchData(`${URL}/categories/${product.category.id}`);
-    
-    console.log(products[0]);
-    console.log(product.title);
-    console.log(category.name);
+    const response = await fetch(url);
+    yield await response.json(); 
   } catch(error) {
-    console.log(error)
+    console.log(error);
   }
 }
 
-processData(API);
+//Llamadas con el método next() en el objeto del Generador usando .then() y manipulando value y done
+fetchData(`${urlApi}/products`).next().then(({ value, done }) => {
+	console.log(value[0]); //Imprime la lista de los Productos de la API
+	
+	const idProduct =value[0].id; //Extrae el id del producto que queremos manipular
+ 		
+	fetchData(`${urlApi}/products/${idProduct}`).next().then(({ value, done }) => {
+        	
+		console.log(value.title); //Imprime el Título del producto solicitado
+        
+		const idCategory = value.category.id;
+        
+fetchData(`${urlApi}/categories/${idCategory}`).next().then(({ value, done }) => {
+           
+			console.log(value.name); //Imprime el nombre de la categoría del producto seleccionado
+        	});
+    	});
+});
